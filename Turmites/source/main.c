@@ -16,8 +16,6 @@
 	int state;
 	int dir;
 	int world[WIDTH][HEIGHT];
-	int moves;
-	int filled;
 	int last_filled;
 	int current_col;
 	int next_col[4][4];
@@ -31,8 +29,6 @@ void rndrule(){
 	memset(fb, 0, 3*SCREEN);
 
 	state = rand()%4;
-	filled = 0;
-	moves = 0;
 	dir = 0;
 	posx = WIDTH/2;
 	posy = HEIGHT/2;
@@ -53,11 +49,7 @@ void rndrule(){
 
 void move_turmite(){
   
-  moves ++;
   int cols = world[posx][posy];
-  
-  if((cols > 0) && (next_col[cols][state] == 0)) filled--;
-  if((cols == 0) && (next_col[cols][state] > 0)) filled++;
   
   oldposx = posx;
   oldposy = posy;
@@ -140,8 +132,6 @@ int main(int argc, char **argv) {
 				fb[3*(oldposy+oldposx*240)+2] = B;
     
 			}
-
-			if((moves>1000) && (filled < 50)) rndrule();
 
 			gfxFlushBuffers();
 			gfxSwapBuffers();
