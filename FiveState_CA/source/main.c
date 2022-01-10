@@ -20,6 +20,7 @@
 	uint8_t child[WIDTH];
 	int count;
 	int a[VAL];
+	bool rndsw = false;
 		
 
 void rndrule(){
@@ -69,6 +70,8 @@ int main(int argc, char **argv) {
 	printf(" \n");
 	printf("Key B = Random seed\n");
 	printf(" \n");
+	printf("Key Y = Random artifact\n");
+	printf(" \n");
 	printf("START = Exit\n");
 
 	srand(svcGetSystemTick());
@@ -85,6 +88,7 @@ int main(int argc, char **argv) {
 			if (hidKeysDown() & KEY_START) break;
 			if (hidKeysDown() & KEY_A) rndrule();
 			if (hidKeysDown() & KEY_B) rndseed();
+			if (hidKeysDown() & KEY_Y) rndsw = !rndsw;
 			
 			for (int y = 0; y < HEIGHT; y++) {
  
@@ -99,6 +103,7 @@ int main(int argc, char **argv) {
 					if(count == a[6] || count == a[7] || count == a[8]) child[x] = 2;
 					if(count == a[9] || count == a[10] || count == a[11]) child[x] = 3;
 					if(count == a[12] || count == a[13] || count == a[14]) child[x] = 4;
+					if(rndsw == true) if (rand()%500 == 2) child[x] = 2;
                
 					if (child[x] == 0) { R = 255; G = 0; B = 0; }
 					if (child[x] == 1) { R = 0; G = 255; B = 0; }
