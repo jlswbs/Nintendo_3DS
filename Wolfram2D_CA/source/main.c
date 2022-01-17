@@ -85,12 +85,12 @@ int main(int argc, char **argv) {
 				uint16_t totalNeighbors = neighbors(x,y);
             
 				if(state[x+y*WIDTH] == 0 && totalNeighbors == 0) {newst[x+y*WIDTH] = rules[0]; R = 0; G = 0; B = 0;}
-				else if(state[x+y*WIDTH] == 1 && totalNeighbors == 0) {newst[x+y*WIDTH] = rules[1]; R = 0; G = 0; B = 0;}
+				else if(state[x+y*WIDTH] == 1 && totalNeighbors == 0) {newst[x+y*WIDTH] = rules[1]; R = 0; G = 255; B = 255;}
 				else if(state[x+y*WIDTH] == 0 && totalNeighbors == 1) {newst[x+y*WIDTH] = rules[2]; R = 255; G = 0; B = 0;}
 				else if(state[x+y*WIDTH] == 1 && totalNeighbors == 1) {newst[x+y*WIDTH] = rules[3]; R = 0; G = 255; B = 0;}
 				else if(state[x+y*WIDTH] == 0 && totalNeighbors == 2) {newst[x+y*WIDTH] = rules[4]; R = 128; G = 0; B = 255;}
 				else if(state[x+y*WIDTH] == 1 && totalNeighbors == 2) {newst[x+y*WIDTH] = rules[5]; R = 255; G = 0; B = 128;}
-				else if(state[x+y*WIDTH] == 0 && totalNeighbors == 3) {newst[x+y*WIDTH] = rules[6]; R = 0; G = 255; B = 0;}
+				else if(state[x+y*WIDTH] == 0 && totalNeighbors == 3) {newst[x+y*WIDTH] = rules[6]; R = 128; G = 255; B = 0;}
 				else if(state[x+y*WIDTH] == 1 && totalNeighbors == 3) {newst[x+y*WIDTH] = rules[7]; R = 0; G = 128; B = 255;}
 				else if(state[x+y*WIDTH] == 0 && totalNeighbors == 4) {newst[x+y*WIDTH] = rules[8]; R = 255; G = 255; B = 0;}
 				else if(state[x+y*WIDTH] == 1 && totalNeighbors == 4) {newst[x+y*WIDTH] = rules[9]; R = 255; G = 255; B = 255;}
