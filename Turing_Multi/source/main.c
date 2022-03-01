@@ -9,8 +9,8 @@
 #define max(a,b) ((a)>(b)?(a):(b))
 #define TWO_PI 6.28318530717958647693f
 
-#define WIDTH 200
-#define HEIGHT 120
+#define WIDTH 400
+#define HEIGHT 240
 #define SCR (WIDTH * HEIGHT)
 #define SCREEN (400 * 240)
 
@@ -24,7 +24,6 @@ float randomf(float minf, float maxf) {return minf + (rand()%(1UL << 31))*(maxf 
   int level, radius, i, x, y;
   int blurlevels, symmetry;
   bool invert = false;
-  bool color = false;
   float base;
   int levels;
   float stepScale;
@@ -44,8 +43,6 @@ float randomf(float minf, float maxf) {return minf + (rand()%(1UL << 31))*(maxf 
   float activator[SCR];
   float inhibitor[SCR];
   float swap[SCR];
-  
-  float a, b, c;
 
 
  int getSymmetry(int i, int w, int h) {
@@ -66,10 +63,6 @@ float randomf(float minf, float maxf) {return minf + (rand()%(1UL << 31))*(maxf 
 	u8* fb = gfxGetFramebuffer(GFX_TOP, GFX_LEFT, NULL, NULL);
 	
 	memset(fb, 0, SCREEN * 3);
-	
-	a = randomf(-1.0f, 1.0f);
-	b = randomf(-1.0f, 1.0f);
-	c = randomf(-1.0f, 1.0f);
 
 	symmetry = rand()%7;
 	base = randomf(1.4f, 2.5f);
@@ -99,14 +92,13 @@ int main(int argc, char **argv) {
 
 	printf("Multi-Scale Turing patterns\n");
 	printf(" \n");
-	printf("Created by JLS 2021\n");
+	printf("Created by JLS 2022\n");
 	printf(" \n");
 	printf(" \n");
 	printf(" \n");
 	printf("Key A = Random rule\n");
 	printf("Key B = Random fill\n");
 	printf("Key Y = Invert\n");
-	printf("Key X = Color\n");
 	printf(" \n");
 	printf("START = Exit\n");
 	
@@ -130,7 +122,6 @@ int main(int argc, char **argv) {
 		if (hidKeysDown() & KEY_A) rndrule();
 		if (hidKeysDown() & KEY_B) for (i = 0; i < SCR; i++) grid[i] = randomf(-1.0f, 1.0f);
 		if (hidKeysDown() & KEY_Y) invert = !invert;
-		if (hidKeysDown() & KEY_X) color = !color;
    
 		if(symmetry >= 1) for(i = 0; i < SCR; i++) grid[i] = grid[i] * 0.9f + grid[getSymmetry(i, WIDTH, HEIGHT)] * 0.1f;
 		
@@ -205,32 +196,14 @@ int main(int argc, char **argv) {
   
 		for (i = 0; i < SCR; i++) grid[i] = ((grid[i] - smallest) / range) - 1.0f;
 		
-		if (color == true) {
-  
-			for (y = 0; y < HEIGHT; y++) {
-				for (x = 0; x < WIDTH; x++) {
-					int t = y * WIDTH + x;
-					uint8_t col1 = invert ? 255-(128 + 128 * (grid[t]*a)) : (128 + 128 * (grid[t]*a));
-					uint8_t col2 = invert ? 255-(128 + 128 * (grid[t]*b)) : (128 + 128 * (grid[t]*b));
-					uint8_t col3 = invert ? 255-(128 + 128 * (grid[t]*c)) : (128 + 128 * (grid[t]*c));		
-					fb[3*((2*y)+(2*x)*240)]   = col1;
-					fb[3*((2*y)+(2*x)*240)+1] = col2;
-					fb[3*((2*y)+(2*x)*240)+2] = col3;
-				}		
-			}
-			
-		} else {
-		
-			for (y = 0; y < HEIGHT; y++) {
-				for (x = 0; x < WIDTH; x++) {
-					int t = y * WIDTH + x;
-					uint8_t coll = invert ? 255-(128 + 128 * grid[t]) : (128 + 128 * grid[t]);		
-					fb[3*((2*y)+(2*x)*240)]   = coll;
-					fb[3*((2*y)+(2*x)*240)+1] = coll;
-					fb[3*((2*y)+(2*x)*240)+2] = coll;
-				}		
-			}
-		
+		for (y = 0; y < HEIGHT; y++) {
+			for (x = 0; x < WIDTH; x++) {
+				int t = y * WIDTH + x;
+				uint8_t coll = invert ? 255-(128 + 128 * grid[t]) : (128 + 128 * grid[t]);		
+				fb[3*(y+x*240)]   = coll;
+				fb[3*(y+x*240)+1] = coll;
+				fb[3*(y+x*240)+2] = coll;
+			}		
 		}
 
 		gfxFlushBuffers();
